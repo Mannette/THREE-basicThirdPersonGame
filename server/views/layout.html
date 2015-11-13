@@ -4,11 +4,17 @@
     <meta charset="utf-8">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/main.css">
   </head>
   <body>
-    {% block content %}
-    {% endblock %}
+
+    <h3>Login!</h3>
+    <form class="form-group">
+      <span><b>Username</b></span>
+      <input type="text" placeholder="Enter your username!">
+      <span><b>Password</b></span>
+      <input type="text" placeholder="Enter your password!">
+    </form>
+
     <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   </body>
