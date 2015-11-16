@@ -23,5 +23,5 @@ if (!Detector.webgl) {
     stats.begin();
     gameLoop();
     stats.end();
-  }
+  };
 })();
