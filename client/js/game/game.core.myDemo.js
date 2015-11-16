@@ -127,8 +127,15 @@ window.game.core = function () {
 				_game.player.updateCamera();
 
 				// Level-specific logic
+				var playerCurPosition = _game.player.mesh.position.x;
+
 				_game.player.checkGameOver();
-				_game.player.accumulatePoints(_game.player.mesh.position.x);
+				_game.player.accumulatePoints(playerCurPosition);
+				if (playerCurPosition < 0 && playerCurPosition > -50000) {
+					_game.randomShapes(playerCurPosition);
+					_game.removeShapes();
+				}
+				// console.log(playerCurPosition);
 
 			},
 			updateCamera: function() {
@@ -272,6 +279,7 @@ window.game.core = function () {
 		level: {
 			// Methods
 			create: function() {
+				console.log(_cannon.bodies);
 
 				// Create a solid material for all objects in the world
 				_cannon.solidMaterial = _cannon.createPhysicsMaterial(new CANNON.Material("solidMaterial"), 0, 0.1);
@@ -297,7 +305,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(floorSize, 20, 1000)),
 					mass: 0,
-					position: new CANNON.Vec3(0, floorWidth, 60),
+					position: new CANNON.Vec3(0, floorWidth, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.black
 					}),
@@ -307,7 +315,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(floorSize, 20, 1000)),
 					mass: 0,
-					position: new CANNON.Vec3(0, floorSize / -100, 60),
+					position: new CANNON.Vec3(0, floorSize / -100, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.black
 					}),
@@ -1785,6 +1793,70 @@ window.game.core = function () {
 				grid.position.z = 0.5;
 				grid.rotation.x = window.game.helpers.degToRad(90);
 				_three.scene.add(grid);
+			}
+		},
+		determineRandomShapes: function() {
+			console.log('create shapes');
+			var randX = (Math.random() * (_game.player.mesh.position.x - 3000)),
+		  		randY = (Math.random() * 1800) - 900;
+
+		  var randXSize = (Math.random() * 50) + 10,
+		  		randYSize = null,
+		  		randZsize = null,
+		  	  randRadius = (Math.random() * 50) + 10;
+
+		  var mass = 5,
+						 z = 200;
+
+		  var randCylRad = (Math.random() * 200) + 10;
+
+		  var randomSelected = Math.floor(Math.random() * 2);
+
+		  switch (randomSelected) {
+		    case 0:
+						_cannon.createRigidBody({
+			        shape: new CANNON.Box(new CANNON.Vec3(randXSize, randXSize, randXSize)),
+			        mass: mass,
+			        position: new CANNON.Vec3(randX, randY, z),
+			        meshMaterial: new THREE.MeshLambertMaterial({
+			          color: window.game.static.colors.cyan
+			        }),
+			        physicsMaterial: _cannon.solidMaterial
+		      	});
+		      break;
+		    case 1:
+						_cannon.createRigidBody({
+			        shape: new CANNON.Sphere(randRadius),
+			        mass: mass,
+			        position: new CANNON.Vec3(randX, randY, z),
+			        meshMaterial: new THREE.MeshLambertMaterial({
+			          color: window.game.static.colors.cyan
+			        }),
+			        physicsMaterial: _cannon.solidMaterial
+			      });
+		      break;
+
+		  }
+
+		},
+		randomShapes: function(playerPosition) {
+			if (playerPosition < -1000 && playerPosition > -50000) {
+				var interval = window.setInterval(_game.determineRandomShapes, 3000);
+				// _game.determineRandomShapes(_game.player.mesh.position.x);
+				// _game.determineRemove(interval);
+				return interval;
+
+			}
+		},
+		removeShapes: function() {
+			if (_cannon.bodies.length > 140) {
+				for (var i = 140; i < _cannon.bodies.length; i++) {
+					if (_cannon.bodies[i].position.x > (_game.player.mesh.position.x + 50)) {
+						console.log('removing shapes: ' + _cannon.bodies[i]);
+						_cannon.removeVisual(_cannon.bodies[i]);
+						// _three.scene.remove()
+					}
+				}
 			}
 		},
 
