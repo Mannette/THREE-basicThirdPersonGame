@@ -1,3 +1,6 @@
 
 ✔ Adjust pillar positions by -5000 @done(2015-11-13 14:20)
 ☐ Create login & signup
+☐ Create falling random objects without cylinders
+☐ Remove objects as player passes them to avoid crashing
+☐ Have objects fall further from player
