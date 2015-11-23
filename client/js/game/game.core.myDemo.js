@@ -131,8 +131,8 @@ window.game.core = function () {
 
 				_game.player.checkGameOver();
 				_game.player.accumulatePoints(playerCurPosition);
-				if (playerCurPosition < -1000 && playerCurPosition > -50000) {
-					_game.randomShapes(playerCurPosition);
+				if (playerCurPosition < -1000 && playerCurPosition > -50000 && _cannon.bodies.length < 60) {
+					_game.randomShapes();
 				}
 				_game.removeShapes();
 				// console.log(playerCurPosition);
@@ -1797,12 +1797,13 @@ window.game.core = function () {
 		},
 		determineRandomShapes: function() {
 			console.log('create shapes');
-			var randX = (Math.random() * (_game.player.mesh.position.x - 5000)),
+			var min = _game.player.mesh.position.x - 5000,
+					max = _game.player.mesh.position.x - 8000;
+
+			var randX = Math.random() * (max - min) + min,
 		  		randY = (Math.random() * 1800) - 900;
 
-		  var randXSize = (Math.random() * 50) + 10,
-		  		randYSize = null,
-		  		randZsize = null,
+		  var randSize = (Math.random() * 50) + 10,
 		  	  randRadius = (Math.random() * 50) + 10;
 
 		  var mass = 5,
@@ -1815,7 +1816,7 @@ window.game.core = function () {
 		  switch (randomSelected) {
 		    case 0:
 						_cannon.createRigidBody({
-			        shape: new CANNON.Box(new CANNON.Vec3(randXSize, randXSize, randXSize)),
+			        shape: new CANNON.Box(new CANNON.Vec3(randSize, randSize, randSize)),
 			        mass: mass,
 			        position: new CANNON.Vec3(randX, randY, z),
 			        meshMaterial: new THREE.MeshLambertMaterial({
@@ -1839,13 +1840,15 @@ window.game.core = function () {
 		  }
 
 		},
-		randomShapes: function(playerPosition) {
+		randomShapes: function() {
+			if (_cannon.bodies.length <= 240) {
 				_game.determineRandomShapes();
+			}
 		},
 		removeShapes: function() {
-			if (_cannon.bodies.length > 140) {
-				for (var i = 140; i < _cannon.bodies.length; i++) {
-					if (_cannon.bodies[i].position.x > (_game.player.mesh.position.x + 100)) {
+			if (_cannon.bodies.length > 4) {
+				for (var i = 4; i < _cannon.bodies.length; i++) {
+					if (_cannon.bodies[i].position.x > (_game.player.mesh.position.x + 500)) {
 						console.log('removing shapes: ' + _cannon.bodies[i]);
 						_cannon.removeVisual(_cannon.bodies[i]);
 						// _three.scene.remove()
