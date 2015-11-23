@@ -131,10 +131,10 @@ window.game.core = function () {
 
 				_game.player.checkGameOver();
 				_game.player.accumulatePoints(playerCurPosition);
-				if (playerCurPosition < 0 && playerCurPosition > -50000) {
+				if (playerCurPosition < -1000 && playerCurPosition > -50000) {
 					_game.randomShapes(playerCurPosition);
-					_game.removeShapes();
 				}
+				_game.removeShapes();
 				// console.log(playerCurPosition);
 
 			},
@@ -1797,7 +1797,7 @@ window.game.core = function () {
 		},
 		determineRandomShapes: function() {
 			console.log('create shapes');
-			var randX = (Math.random() * (_game.player.mesh.position.x - 3000)),
+			var randX = (Math.random() * (_game.player.mesh.position.x - 5000)),
 		  		randY = (Math.random() * 1800) - 900;
 
 		  var randXSize = (Math.random() * 50) + 10,
@@ -1840,18 +1840,12 @@ window.game.core = function () {
 
 		},
 		randomShapes: function(playerPosition) {
-			if (playerPosition < -1000 && playerPosition > -50000) {
-				var interval = window.setInterval(_game.determineRandomShapes, 3000);
-				// _game.determineRandomShapes(_game.player.mesh.position.x);
-				// _game.determineRemove(interval);
-				return interval;
-
-			}
+				_game.determineRandomShapes();
 		},
 		removeShapes: function() {
 			if (_cannon.bodies.length > 140) {
 				for (var i = 140; i < _cannon.bodies.length; i++) {
-					if (_cannon.bodies[i].position.x > (_game.player.mesh.position.x + 50)) {
+					if (_cannon.bodies[i].position.x > (_game.player.mesh.position.x + 100)) {
 						console.log('removing shapes: ' + _cannon.bodies[i]);
 						_cannon.removeVisual(_cannon.bodies[i]);
 						// _three.scene.remove()
