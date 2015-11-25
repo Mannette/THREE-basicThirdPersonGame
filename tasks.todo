@@ -1,6 +1,11 @@
 
 ✔ Adjust pillar positions by -5000 @done(2015-11-13 14:20)
 ☐ Create login & signup
-☐ Create falling random objects without cylinders
-☐ Remove objects as player passes them to avoid crashing
-☐ Have objects fall further from player
+✔ Create falling random objects without cylinders @done(2015-11-25 10:30)
+✔ Remove objects as player passes them to avoid crashing @done(2015-11-25 10:30)
+✔ Have objects fall further from player @done(2015-11-25 10:30)
+☐ Adjust level to account for increased floor size
+☐ Create second level objects
+☐ increase difficulty on second level
+☐ show user they have reached second level
+☐ create new point accumulation system
