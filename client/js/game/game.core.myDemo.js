@@ -8,12 +8,18 @@ window.game = window.game || {};
 
 window.game.core = function () {
 	var _game = {
+
+		// initial limit value for randomly generated shapes
+		shapeLimit: 60,
+		// initial value for level
+		levelDifficulty: 1,
 		// Attributes
 		player: {
 			// Attributes
 
 			// player's points
 			points: 0,
+
 			// an array to hold the positions where points have been accumulated
 			positionArr: [],
 
@@ -24,7 +30,7 @@ window.game.core = function () {
 			rigidBody: null,
 			// Player mass which affects other rigid bodies in the world
 			mass: 3,
-			playerStartingX: 99950,
+			playerStartingX: 199950,
 
 			// HingeConstraint to limit player's air-twisting
 			orientationConstraint: null,
@@ -131,8 +137,10 @@ window.game.core = function () {
 
 				_game.player.checkGameOver();
 				_game.player.accumulatePoints(playerCurPosition);
-				if (playerCurPosition < -1000 && playerCurPosition > -50000 && _cannon.bodies.length < 60) {
+				if (playerCurPosition < -1000 && playerCurPosition > -50000 && _cannon.bodies.length < _game.player.shapeLimit ) {
 					_game.randomShapes();
+					_game.player.shapeLimit *= levelDifficulty;
+					console.log(_game.player.shapeLimit);
 				}
 				_game.removeShapes();
 				// console.log(playerCurPosition);
@@ -285,8 +293,8 @@ window.game.core = function () {
 				_cannon.solidMaterial = _cannon.createPhysicsMaterial(new CANNON.Material("solidMaterial"), 0, 0.1);
 
 				// Define floor settings
-				var floorSize = 100000;
-				var floorWidth = floorSize / 100;
+				var floorSize = 200000;
+				var floorWidth = floorSize / 200;
 				var floorHeight = 20;
 
 				// Add a floor
@@ -315,7 +323,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(floorSize, 20, 1000)),
 					mass: 0,
-					position: new CANNON.Vec3(0, floorSize / -100, 1000),
+					position: new CANNON.Vec3(0, -floorWidth, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.black
 					}),
@@ -332,7 +340,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(95000, 0, 250),
+					position: new CANNON.Vec3(195000, 0, 250),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -342,7 +350,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth / 2, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(95000, 600, 50),
+					position: new CANNON.Vec3(195000, 600, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -352,7 +360,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 500, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(95000, -600, 50),
+					position: new CANNON.Vec3(195000, -600, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -368,7 +376,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(92000, 0, 250),
+					position: new CANNON.Vec3(192000, 0, 250),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -378,7 +386,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth / 2, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(92000, 1200, 50),
+					position: new CANNON.Vec3(192000, 1200, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -388,7 +396,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 900, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(92000, -400, 50),
+					position: new CANNON.Vec3(192000, -400, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -404,7 +412,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(89000, 0, 250),
+					position: new CANNON.Vec3(189000, 0, 250),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -414,7 +422,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 800, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(89000, 300, 50),
+					position: new CANNON.Vec3(189000, 300, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -424,7 +432,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 400, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(89000, -1100, 50),
+					position: new CANNON.Vec3(189000, -1100, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -440,7 +448,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(86000, 0, 250),
+					position: new CANNON.Vec3(186000, 0, 250),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -450,7 +458,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth / 2, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(86000, 500, 50),
+					position: new CANNON.Vec3(186000, 500, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -460,7 +468,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 400, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(86000, -600, 50),
+					position: new CANNON.Vec3(186000, -600, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -476,7 +484,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(83000, 0, 250),
+					position: new CANNON.Vec3(183000, 0, 250),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -486,7 +494,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 850, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(83000, 150, 50),
+					position: new CANNON.Vec3(183000, 150, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -496,7 +504,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 50, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(83000, -950, 50),
+					position: new CANNON.Vec3(183000, -950, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -512,7 +520,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(80000, 0, 250),
+					position: new CANNON.Vec3(180000, 0, 250),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -522,7 +530,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 650, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(80000, 350, 50),
+					position: new CANNON.Vec3(180000, 350, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -532,7 +540,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 250, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(80000, -750, 50),
+					position: new CANNON.Vec3(180000, -750, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -548,7 +556,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(77000, 0, 250),
+					position: new CANNON.Vec3(177000, 0, 250),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -558,7 +566,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth / 2, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(77000, 500, 50),
+					position: new CANNON.Vec3(177000, 500, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -568,7 +576,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 400, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(77000, -600, 50),
+					position: new CANNON.Vec3(177000, -600, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -584,7 +592,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(74000, 0, 250),
+					position: new CANNON.Vec3(174000, 0, 250),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -594,7 +602,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 350, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(74000, 650, 50),
+					position: new CANNON.Vec3(174000, 650, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -604,7 +612,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 550, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(74000, -450, 50),
+					position: new CANNON.Vec3(174000, -450, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -620,7 +628,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(71000, 0, 250),
+					position: new CANNON.Vec3(171000, 0, 250),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -630,7 +638,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth / 2, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(71000, 500, 50),
+					position: new CANNON.Vec3(171000, 500, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -640,7 +648,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 400, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(71000, -600, 50),
+					position: new CANNON.Vec3(171000, -600, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -656,7 +664,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, floorWidth, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(68000, 0, 250),
+					position: new CANNON.Vec3(168000, 0, 250),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -666,7 +674,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 400, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(68000, 600, 50),
+					position: new CANNON.Vec3(168000, 600, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -676,7 +684,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 400, 100)),
 					mass: 0,
-					position: new CANNON.Vec3(68000, -600, 50),
+					position: new CANNON.Vec3(168000, -600, 50),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -686,7 +694,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: new CANNON.Box(new CANNON.Vec3(20, 400, 115)),
 					mass: 0,
-					position: new CANNON.Vec3(68000, 0, 0),
+					position: new CANNON.Vec3(168000, 0, 0),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.red
 					}),
@@ -710,7 +718,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(65000, 0, 1000),
+					position: new CANNON.Vec3(165000, 0, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -722,7 +730,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(60000, -333, 1000),
+					position: new CANNON.Vec3(160000, -333, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -732,7 +740,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(60000, 333, 1000),
+					position: new CANNON.Vec3(160000, 333, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -744,7 +752,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(55000, 0, 500),
+					position: new CANNON.Vec3(155000, 0, 500),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -754,7 +762,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(55000, -500, 500),
+					position: new CANNON.Vec3(155000, -500, 500),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -764,7 +772,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(55000, 500, 500),
+					position: new CANNON.Vec3(155000, 500, 500),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -776,7 +784,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(50000, -600, 1000),
+					position: new CANNON.Vec3(150000, -600, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -786,7 +794,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(50000, -200, 1000),
+					position: new CANNON.Vec3(150000, -200, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -796,7 +804,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(50000, 200, 1000),
+					position: new CANNON.Vec3(150000, 200, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -806,7 +814,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(50000, 600, 550),
+					position: new CANNON.Vec3(150000, 600, 550),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -818,7 +826,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(45000, -666, 1000),
+					position: new CANNON.Vec3(145000, -666, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -828,7 +836,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(45000, -333, 1000),
+					position: new CANNON.Vec3(145000, -333, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -838,7 +846,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(45000, 0, 1000),
+					position: new CANNON.Vec3(145000, 0, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -848,7 +856,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(45000, 333, 1000),
+					position: new CANNON.Vec3(145000, 333, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -858,7 +866,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(45000, 666, 1000),
+					position: new CANNON.Vec3(145000, 666, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -870,7 +878,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(40000, -714, 1000),
+					position: new CANNON.Vec3(140000, -714, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -880,7 +888,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(40000, -428, 1000),
+					position: new CANNON.Vec3(140000, -428, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -890,7 +898,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(40000, -142, 1000),
+					position: new CANNON.Vec3(140000, -142, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -900,7 +908,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(40000, 142, 1000),
+					position: new CANNON.Vec3(140000, 142, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -910,7 +918,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(40000, 428, 1000),
+					position: new CANNON.Vec3(140000, 428, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -920,7 +928,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(40000, 714, 1000),
+					position: new CANNON.Vec3(140000, 714, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -932,7 +940,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(35000, -750, 1000),
+					position: new CANNON.Vec3(135000, -750, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -942,7 +950,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(35000, -500, 1000),
+					position: new CANNON.Vec3(135000, -500, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -952,7 +960,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(35000, -250, 1000),
+					position: new CANNON.Vec3(135000, -250, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -962,7 +970,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(35000, 0, 1000),
+					position: new CANNON.Vec3(135000, 0, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -972,7 +980,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(35000, 250, 1000),
+					position: new CANNON.Vec3(135000, 250, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -982,7 +990,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(35000, 500, 1000),
+					position: new CANNON.Vec3(135000, 500, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -992,7 +1000,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(35000, 750, 1000),
+					position: new CANNON.Vec3(135000, 750, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1004,7 +1012,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(30000, -778, 1000),
+					position: new CANNON.Vec3(130000, -778, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1014,7 +1022,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(30000, -556, 1000),
+					position: new CANNON.Vec3(130000, -556, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1024,7 +1032,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(30000, -334, 1000),
+					position: new CANNON.Vec3(130000, -334, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1034,7 +1042,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(30000, -112, 1000),
+					position: new CANNON.Vec3(130000, -112, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1044,7 +1052,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(30000, 112, 1000),
+					position: new CANNON.Vec3(130000, 112, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1054,7 +1062,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(30000, 334, 1000),
+					position: new CANNON.Vec3(130000, 334, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1064,7 +1072,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(30000, 556, 1000),
+					position: new CANNON.Vec3(130000, 556, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1074,7 +1082,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(30000, 778, 1000),
+					position: new CANNON.Vec3(130000, 778, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1086,7 +1094,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(25000, -800, 1000),
+					position: new CANNON.Vec3(125000, -800, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1096,7 +1104,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(25000, -600, 1000),
+					position: new CANNON.Vec3(125000, -600, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1106,7 +1114,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(25000, -400, 1000),
+					position: new CANNON.Vec3(125000, -400, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1116,7 +1124,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(25000, -200, 1000),
+					position: new CANNON.Vec3(125000, -200, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1126,7 +1134,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(25000, 0, 1000),
+					position: new CANNON.Vec3(125000, 0, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1136,7 +1144,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(25000, 200, 1000),
+					position: new CANNON.Vec3(125000, 200, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1146,7 +1154,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(25000, 400, 1000),
+					position: new CANNON.Vec3(125000, 400, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1156,7 +1164,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(25000, 600, 1000),
+					position: new CANNON.Vec3(125000, 600, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1166,7 +1174,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(25000, 800, 1000),
+					position: new CANNON.Vec3(125000, 800, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1178,7 +1186,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(20000, -818, 1000),
+					position: new CANNON.Vec3(120000, -818, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1188,7 +1196,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(20000, -636, 1000),
+					position: new CANNON.Vec3(120000, -636, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1198,7 +1206,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(20000, -454, 1000),
+					position: new CANNON.Vec3(120000, -454, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1208,7 +1216,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(20000, -272, 1000),
+					position: new CANNON.Vec3(120000, -272, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1218,7 +1226,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(20000, -90, 1000),
+					position: new CANNON.Vec3(120000, -90, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1228,7 +1236,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(20000, 90, 1000),
+					position: new CANNON.Vec3(120000, 90, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1238,7 +1246,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(20000, 272, 1000),
+					position: new CANNON.Vec3(120000, 272, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1248,7 +1256,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(20000, 454, 1000),
+					position: new CANNON.Vec3(120000, 454, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1258,7 +1266,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(20000, 636, 1000),
+					position: new CANNON.Vec3(120000, 636, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1268,7 +1276,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(20000, 818, 1000),
+					position: new CANNON.Vec3(120000, 818, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1280,7 +1288,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, -833, 1000),
+					position: new CANNON.Vec3(115000, -833, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1290,7 +1298,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, -666, 1000),
+					position: new CANNON.Vec3(115000, -666, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1300,7 +1308,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, -500, 1000),
+					position: new CANNON.Vec3(115000, -500, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1310,7 +1318,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, -333, 1000),
+					position: new CANNON.Vec3(115000, -333, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1320,7 +1328,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, -166, 1000),
+					position: new CANNON.Vec3(115000, -166, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1330,7 +1338,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, 0, 1000),
+					position: new CANNON.Vec3(115000, 0, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1340,7 +1348,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, 166, 1000),
+					position: new CANNON.Vec3(115000, 166, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1350,7 +1358,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, 333, 1000),
+					position: new CANNON.Vec3(115000, 333, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1360,7 +1368,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, 500, 1000),
+					position: new CANNON.Vec3(115000, 500, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1370,7 +1378,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, 666, 1000),
+					position: new CANNON.Vec3(115000, 666, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1380,7 +1388,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(15000, 833, 1000),
+					position: new CANNON.Vec3(115000, 833, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1392,7 +1400,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, -846, 1000),
+					position: new CANNON.Vec3(110000, -846, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1402,7 +1410,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, -692, 1000),
+					position: new CANNON.Vec3(110000, -692, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1412,7 +1420,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, -538, 1000),
+					position: new CANNON.Vec3(110000, -538, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1422,7 +1430,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, -384, 1000),
+					position: new CANNON.Vec3(110000, -384, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1432,7 +1440,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, -230, 1000),
+					position: new CANNON.Vec3(110000, -230, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1442,7 +1450,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, -77, 1000),
+					position: new CANNON.Vec3(110000, -77, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1452,7 +1460,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, 77, 1000),
+					position: new CANNON.Vec3(110000, 77, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1462,7 +1470,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, 230, 1000),
+					position: new CANNON.Vec3(110000, 230, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1472,7 +1480,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, 384, 1000),
+					position: new CANNON.Vec3(110000, 384, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1482,7 +1490,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, 538, 1000),
+					position: new CANNON.Vec3(110000, 538, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1492,7 +1500,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, 692, 1000),
+					position: new CANNON.Vec3(110000, 692, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1502,7 +1510,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(10000, 846, 1000),
+					position: new CANNON.Vec3(110000, 846, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1514,7 +1522,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, -857, 1000),
+					position: new CANNON.Vec3(105000, -857, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1524,7 +1532,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, -714, 1000),
+					position: new CANNON.Vec3(105000, -714, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1534,7 +1542,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, -571, 1000),
+					position: new CANNON.Vec3(105000, -571, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1544,7 +1552,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, -428, 1000),
+					position: new CANNON.Vec3(105000, -428, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1554,7 +1562,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, -285, 1000),
+					position: new CANNON.Vec3(105000, -285, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1564,7 +1572,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, -143, 1000),
+					position: new CANNON.Vec3(105000, -143, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1574,7 +1582,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, 0, 1000),
+					position: new CANNON.Vec3(105000, 0, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1584,7 +1592,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, 143, 1000),
+					position: new CANNON.Vec3(105000, 143, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1594,7 +1602,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, 285, 1000),
+					position: new CANNON.Vec3(105000, 285, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1604,7 +1612,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, 428, 1000),
+					position: new CANNON.Vec3(105000, 428, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1614,7 +1622,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, 571, 1000),
+					position: new CANNON.Vec3(105000, 571, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1624,7 +1632,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, 714, 1000),
+					position: new CANNON.Vec3(105000, 714, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1634,7 +1642,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(5000, 857, 1000),
+					position: new CANNON.Vec3(105000, 857, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1646,7 +1654,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, -866, 1000),
+					position: new CANNON.Vec3(100000, -866, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1656,7 +1664,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, -733, 1000),
+					position: new CANNON.Vec3(100000, -733, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1666,7 +1674,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, -600, 1000),
+					position: new CANNON.Vec3(100000, -600, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1676,7 +1684,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, -467, 1000),
+					position: new CANNON.Vec3(100000, -467, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1686,7 +1694,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, -333, 1000),
+					position: new CANNON.Vec3(100000, -333, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1696,7 +1704,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, -200, 1000),
+					position: new CANNON.Vec3(100000, -200, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1706,7 +1714,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, -67, 1000),
+					position: new CANNON.Vec3(100000, -67, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1716,7 +1724,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, 67, 1000),
+					position: new CANNON.Vec3(100000, 67, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1726,7 +1734,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, 200, 1000),
+					position: new CANNON.Vec3(100000, 200, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1736,7 +1744,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, 333, 1000),
+					position: new CANNON.Vec3(100000, 333, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1746,7 +1754,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, 467, 1000),
+					position: new CANNON.Vec3(100000, 467, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1756,7 +1764,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, 600, 1000),
+					position: new CANNON.Vec3(100000, 600, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1766,7 +1774,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, 733, 1000),
+					position: new CANNON.Vec3(100000, 733, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1776,7 +1784,7 @@ window.game.core = function () {
 				_cannon.createRigidBody({
 					shape: pillar,
 					mass: 0,
-					position: new CANNON.Vec3(0, 866, 1000),
+					position: new CANNON.Vec3(100000, 866, 1000),
 					meshMaterial: new THREE.MeshLambertMaterial({
 						color: window.game.static.colors.cyan
 					}),
@@ -1841,9 +1849,7 @@ window.game.core = function () {
 
 		},
 		randomShapes: function() {
-			if (_cannon.bodies.length <= 240) {
-				_game.determineRandomShapes();
-			}
+			_game.determineRandomShapes();
 		},
 		removeShapes: function() {
 			if (_cannon.bodies.length > 4) {
