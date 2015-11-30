@@ -4,7 +4,7 @@
 ✔ Create falling random objects without cylinders @done(2015-11-25 10:30)
 ✔ Remove objects as player passes them to avoid crashing @done(2015-11-25 10:30)
 ✔ Have objects fall further from player @done(2015-11-25 10:30)
-☐ Adjust level to account for increased floor size
+✔ Adjust level to account for increased floor size @done(2015-11-30 11:13)
 ☐ Create second level objects
 ☐ increase difficulty on second level
 ☐ show user they have reached second level
