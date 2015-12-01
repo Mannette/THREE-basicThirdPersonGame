@@ -13,11 +13,16 @@ window.game.core = function () {
 		levelDifficulty: 1,
 		// initial limit value for randomly generated shapes affected by levelDifficulty
 		shapeLimit: 10,
+		// initial limit value for randomly generated cross beams
+		crossBeamLimit: null,
+		crossBeamRangeMin: 165000,
+		crossBeamRangeMax: 50000,
+		crossBeamLimitAdjuster: 10,
 
-		// initial values to dynamically change for shape generation
+		// initial position values to dynamically change for shape generation
 		positionToBeginShapes: 99000,
 		positionToStopShapes: 50000,
-		levelTransition: 153000,
+		levelTransition: 155000,
 
 		// Attributes
 		player: {
@@ -141,7 +146,7 @@ window.game.core = function () {
 				// Level-specific logic
 				var playerCurPosition = _game.player.mesh.position.x;
 				// change the shape limit based on levelDifficulty. Limit increases by 10 each level.
-				var newLimit = _game.shapeLimit + _game.levelDifficulty * 10;
+				var newShapeLimit = _game.shapeLimit + _game.levelDifficulty * 10;
 
 				_game.player.checkGameOver();
 				// point accumulation based on player's position.
@@ -149,18 +154,26 @@ window.game.core = function () {
 				// function to remove shapes as player passes them
 				_game.removeShapes();
 
-				if (playerCurPosition <= _game.positionToBeginShapes && playerCurPosition > _game.positionToStopShapes && _cannon.bodies.length < newLimit) {
+				if (_game.levelDifficulty > 1) {
+					_game.crossBeamLimit = _game.levelDifficulty * 5 + _game.crossBeamLimitAdjuster;
+				} else {
+					_game.crossBeamLimit = _game.crossBeamLimitAdjuster;
+				}
+
+				if (playerCurPosition <= _game.positionToBeginShapes && playerCurPosition > _game.positionToStopShapes && _cannon.bodies.length - _game.crossBeamLimit < newShapeLimit) {
 					_game.randomShapes();
 				}
+
 				if (playerCurPosition < _game.positionToStopShapes) {
 					_game.positionToBeginShapes -= _game.levelTransition;
 					_game.positionToStopShapes -= _game.levelTransition;
+					_game.crossBeamRangeMin -= _game.levelTransition;
+					_game.crossBeamRangeMax -= _game.levelTransition;
 					_game.levelDifficulty += 1;
 					for (var i = counter; i < _game.level.additionalLevels.length; counter++) {
 						return _game.level.additionalLevels[i]();
 					}
 				}
-
 			},
 			updateCamera: function() {
 				// Calculate camera coordinates by using Euler radians from player's last rotation
@@ -208,7 +221,7 @@ window.game.core = function () {
 					if (Math.floor(playerPosition) % 100 === (50 || -50)) {
 						_game.player.points += 10;
 						_game.player.positionArr.push(Math.floor(playerPosition));
-						console.log(_game.player.points);
+						// console.log(_game.player.points);
 					}
 				}
 			},
@@ -311,14 +324,10 @@ window.game.core = function () {
 			create: function() {
 				console.log(_game.shapeLimit);
 				console.log(_cannon.bodies);
+				console.log('the level difficulty is: ' + _game.levelDifficulty);
 
 				// Create a solid material for all objects in the world
 				_cannon.solidMaterial = _cannon.createPhysicsMaterial(new CANNON.Material("solidMaterial"), 0, 0.1);
-
-				// // Define floor settings
-				// var floorSize = 200000;
-				// var floorWidth = floorSize / 200;
-				// var floorHeight = 20;
 
 				// Add a floor
 				_cannon.createRigidBody({
@@ -352,6 +361,11 @@ window.game.core = function () {
 					}),
 					physicsMaterial: _cannon.solidMaterial
 				});
+
+				// random cross beams
+				for (var i = 0; i < _game.crossBeamLimitAdjuster; i++) {
+					_game.randomCrossBeams();
+				}
 
 //VVVVVVVVVVVVVVVVV//
 /// *** GATES *** ///
@@ -1866,8 +1880,19 @@ window.game.core = function () {
 				grid.rotation.x = window.game.helpers.degToRad(90);
 				_three.scene.add(grid);
 			},
+
+			//------------------------------------------//
+			// ARRAY OF FUNCTIONS FOR ADDITIONAL LEVELS //
+			//------------------------------------------//
+
 			additionalLevels: [
 				function() {
+					console.log('the level difficulty is: ' + _game.levelDifficulty);
+					// random cross beams
+					for (var i = 0; i < _game.crossBeamLimit; i++) {
+						_game.randomCrossBeams();
+					}
+
 					//VVVVVVVVVVVVVVVVV//
 					/// *** GATES *** ///
 					//VVVVVVVVVVVVVVVVV//
@@ -3389,7 +3414,7 @@ window.game.core = function () {
 		removeShapes: function() {
 			if (_cannon.bodies.length > 4) {
 				for (var i = 4; i < _cannon.bodies.length; i++) {
-					if (_cannon.bodies[i].position.x > (_game.player.mesh.position.x + 500)) {
+					if (_cannon.bodies[i].position.x >= (_game.player.mesh.position.x + 500)) {
 						console.log('removing shapes: ' + _cannon.bodies[i]);
 						_cannon.removeVisual(_cannon.bodies[i]);
 						// _three.scene.remove()
@@ -3398,6 +3423,25 @@ window.game.core = function () {
 			} else {
 				return;
 			}
+		},
+		randomCrossBeams: function() {
+			var zMin = 25,
+					zMax = 75,
+					xMin = _game.crossBeamRangeMin,
+					xMax = _game.crossBeamRangeMax;
+
+			var randX = Math.random() * (xMax - xMin) + xMin,
+					randZ = Math.random() * (zMax - zMin) + zMin;
+
+				_cannon.createRigidBody({
+					shape: new CANNON.Box(new CANNON.Vec3(25, _game.level.floorWidth, 25)),
+					mass: 0,
+					position: new CANNON.Vec3(randX, 0, randZ),
+					meshMaterial: new THREE.MeshLambertMaterial({
+						color: window.game.static.colors.cyan
+					}),
+					physicsMaterial: _cannon.solidMaterial
+				});
 		},
 
 		// Methods
