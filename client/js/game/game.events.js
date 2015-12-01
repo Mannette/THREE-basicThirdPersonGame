@@ -18,7 +18,8 @@ window.game.events = function() {
 				65: "a",
 				68: "d",
 				83: "s",
-				87: "w"
+				87: "w",
+				82: "r"
 			},
 			// This object will contain the pressed key states in real-time
 			pressed: {
