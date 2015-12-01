@@ -1,9 +1,3 @@
-/*
- * Game Core - Demo 1 (Simple demo)
- *
- * A simple example with basic controls (see _game.core.js for an uncommented version of this file)
- */
-
 window.game = window.game || {};
 
 window.game.core = function () {
