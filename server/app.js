@@ -1,23 +1,33 @@
 // *** main dependencies *** //
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var swig = require('swig');
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+require('../server/models/user');
+var express = require('express'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    mongoose = require('mongoose'),
+    session = require('express-session'),
+    passport = require('passport'),
+    localStrategy = require('passport-local').Strategy,
+    bcrypt = require('bcrypt-nodejs'),
+    path = require('path'),
+    bodyParser = require('body-parser'),
+    swig = require('swig'),
+    server = require('http').Server(app),
+    io = require('socket.io')(server);
 
-// *** routes *** //
-var routes = require('./routes/index.js');
+// mongoose
+mongoose.connect('mongodb://localhost/endlessRunner');
 
+// user schema/model
+var User = require('./models/user.js');
 
 // *** express instance *** //
 var app = express();
 
+// *** routes *** //
+var routes = require('./routes/index.js');
 
-// *** view engine *** //
+// // *** view engine *** //
 var swig = new swig.Swig();
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
@@ -26,14 +36,24 @@ app.set('view engine', 'html');
 // *** static directory *** //
 app.set('views', path.join(__dirname, 'views'));
 
-
 // *** config middleware *** //
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, '../client')));
 
+// passport config
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // *** main routes *** //
 app.use('/', routes);
