@@ -88,8 +88,8 @@ window.game.core = function () {
 				backward: "s",
 				left: "a",
 				right: "d",
-				jump: "space",
-				// reset: 'r'
+				jump: "space"
+				// reset: "r"
 			},
 
 			// Methods
@@ -247,7 +247,7 @@ window.game.core = function () {
 					_game.player.updateAcceleration(_game.player.playerAccelerationValues.rotation, -1);
 				}
 
-				// if (_events.keyboard.pressed[_game.player.contrcontrolKeys.reset]) {
+				// if (_events.keyboard.pressed[_game.player.controlKeys.reset]) {
 				// 	_game.destroy();
 				// }
 
