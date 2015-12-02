@@ -1,0 +1,39 @@
+body {
+  font-family: Impact, Charcoal, sans-serif;
+}
+
+.login {
+  text-align: center;
+  margin-top: 5px;
+  font-size: 25px;
+}
+
+.login .title {
+  font-size: 50px;
+  color: white;
+  background-color: blue;
+  height: 100px;
+  padding-top: 25px;
+  border-radius: 20px;
+}
+
+.btn {
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+.form-group {
+  margin-top: 60px;
+}
+
+.non-user-play {
+  position: relative;
+  font-size: 10px;
+  top: -280px;
+  display: block;
+  margin: 0 auto;
+}
+
+.init-signup {
+  display: block;
+  text-align: center;
+}
