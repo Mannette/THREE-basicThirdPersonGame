@@ -17,6 +17,10 @@ body {
   border-radius: 20px;
 }
 
+.login .btn {
+  margin-top: 10px;
+}
+
 .btn {
   font-family: "Lucida Console", Monaco, monospace;
 }
@@ -28,7 +32,7 @@ body {
 .non-user-play {
   position: relative;
   font-size: 10px;
-  top: -280px;
+  top: -290px;
   display: block;
   margin: 0 auto;
 }
