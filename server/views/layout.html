@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
   <head>
     <meta charset="utf-8">
     <title>{{ title }}</title>
@@ -7,30 +7,36 @@
     <link rel="stylesheet" href="css/homePage.css">
   </head>
   <body>
-
-    <div class="login">
+    <div class="login" ng-controller="loginController">
       <h2 class="title">Do you wish to login?!</h2>
-      <form class="form-group">
-        <span class="login-form"><b>Username</b></span>
+      <section ng-show="loginError" class="alert alert-danger">
+        Invalid username or password.
+      </section>
+      <section ng-show="tempUserError" class="alert alert-danger">
+        Oh noeees! Something went horribly wrong!
+      </section>
+      <form class="form-group" ng-submit="login()">
+        <span class="login-form"><label><b>Username</b></label></span>
         <br>
-        <input type="text" class="login-info" placeholder="Enter your username!">
+        <input type="text" class="login-info" placeholder="Enter your username!" ng-model="login.username">
         <br>
         <br>
-        <span class="login-form"><b>Password</b></span>
+        <span class="login-form"><label><b>Password</b></label></span>
         <br>
-        <input type="text" class="login-info" placeholder="Enter your password!">
+        <input type="password" class="login-info" placeholder="Enter your password!" ng-model="login.password">
+        <br>
+        <button action="submit" class="btn btn-info btn-md">Login!</button>
       </form>
-      <button action="submit" class="btn btn-info btn-md">Login!</button>
     </div>
 
     <button class="btn btn-danger btn-lg non-user-play">No! Let me play!</button>
 
-    <span class="init-signup">
+    <span id="sign-up" class="init-signup">
       Don't have a username?
-      <button class="btn btn-warning btn-sm">Sign Up!</button>
+      <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Sign Up!</button>
     </span>
 
-    <div id="myModal" class="modal fade" role="dialog" action="/register" method="post">
+    <div id="myModal" class="modal fade" role="dialog" action="/register" method="post" ng-controller="registerController">
     <div class="modal-dialog">
 
       <!-- ** Modal content ** -->
@@ -47,15 +53,13 @@
             <form class="form" ng-submit="register()">
               <div class="form-group">
                 <label>Username</label>
-                <input type="text" class="form-control" name="username" ng-model="registerForm.username" placeholder="Pick your username.." required>
+                <input type="text" class="form-control" name="username" ng-model="register.username" placeholder="Pick your username.." required>
               </div>
-              <div class="form-group">
+              <div class="form-group register">
                 <label>Password</label>
-                  <input type="password" class="form-control" name="password" ng-model="registerForm.password" placeholder="Password must be more than five characters" required>
+                  <input type="password" class="form-control" name="password" ng-model="register.password" placeholder="Password must be more than five characters" required>
                 </div>
-                <div>
-                  <button type="submit" class="btn btn-info" ng-disabled="disabled" ng-show="registerForm.password.length >= 6">Register</button>
-                </div>
+                <button action="submit" class="btn btn-success btn-sm" ng-show="register.password.length >= 6">Let's Play!</button>
             </form>
           </div>
         </div>
@@ -66,8 +70,11 @@
     </div>
   </div>
 
-    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="js/homePage/homePg.js"
+    <script src="js/homePage/factoryServices.js"></script>
+    <script src="js/homePage/homePg.js"></script>
   </body>
 </html>
