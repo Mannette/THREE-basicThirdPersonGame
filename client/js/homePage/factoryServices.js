@@ -3,17 +3,12 @@ var myApp = angular.module('myApp', ['ngRoute']);
 myApp.config(function($routeProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: '../server/views/layout.html',
-      controller: 'loginController',
+      templateUrl: 'partials/home.html',
       access: {restricted: false}
     })
-    .when('/logout', {
-      controller: 'logoutController',
-      access: {restricted: false}
-    })
-    .when('/#/game', {
-      templateUrl: '../server/views/myDemo.html',
-      access: {restricted: false}
+    .when('/game', {
+      templateUrl: 'partials/myDemo.html',
+      access: {restricted: true}
     })
     .otherwise({redirectTo: '/'});
 });
@@ -21,6 +16,7 @@ myApp.config(function($routeProvider) {
 myApp.factory('AuthService', ['$q', '$http', function($q, $http) {
 
   var user = null;
+  // var tempUser = null;
 
   // return available functions for use in controllers
   return ({
@@ -28,6 +24,7 @@ myApp.factory('AuthService', ['$q', '$http', function($q, $http) {
     login: login,
     logout: logout,
     register: register,
+    tempUserLogin: tempUserLogin,
     user: user
   });
 
@@ -107,7 +104,7 @@ myApp.factory('AuthService', ['$q', '$http', function($q, $http) {
     return deferred.promise;
   }
 
-  function noUser() {
+  function tempUserLogin() {
     var deferred = $q.defer();
 
     // send POST request to server
@@ -125,6 +122,8 @@ myApp.factory('AuthService', ['$q', '$http', function($q, $http) {
     .error(function(data) {
       deferred.reject();
     });
+
+    return deferred.promise;
   }
 
 }]);
