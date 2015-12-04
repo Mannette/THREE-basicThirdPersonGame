@@ -16,7 +16,6 @@ myApp.config(function($routeProvider) {
 myApp.factory('AuthService', ['$q', '$http', function($q, $http) {
 
   var user = null;
-  // var tempUser = null;
 
   // return available functions for use in controllers
   return ({
