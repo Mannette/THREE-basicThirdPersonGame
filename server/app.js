@@ -11,7 +11,6 @@ var express = require('express'),
     bcrypt = require('bcrypt-nodejs'),
     path = require('path'),
     bodyParser = require('body-parser'),
-    swig = require('swig'),
     server = require('http').Server(app),
     io = require('socket.io')(server);
 
@@ -27,22 +26,13 @@ var app = express();
 // *** routes *** //
 var routes = require('./routes/index.js');
 
-// // *** view engine *** //
-var swig = new swig.Swig();
-app.engine('html', swig.renderFile);
-app.set('view engine', 'html');
-
-
-// *** static directory *** //
-app.set('views', path.join(__dirname, 'views'));
-
 // *** config middleware *** //
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'ZzFlTONvf3uWgwHC',
   resave: true,
   saveUninitialized: true
 }));
@@ -74,7 +64,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+    res.send('error', {
       message: err.message,
       error: err
     });
@@ -85,7 +75,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
+  res.send('error', {
     message: err.message,
     error: {}
   });
