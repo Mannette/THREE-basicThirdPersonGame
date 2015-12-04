@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
 
 
 var tempUser = new Schema({
+  username: String,
   highscore: Number
 });
 
-module.exports = mongoose.model('temp', tempUser);
+module.exports = mongoose.model('tempUsers', tempUser);
