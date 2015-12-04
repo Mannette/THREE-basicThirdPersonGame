@@ -1,25 +1,23 @@
-// var myApp = angular.module('myApp', []);
-
-myApp.controller('loginController', ['$scope', '$location', 'AuthService', '$rootScope', function($scope, $location, AuthService, $rootScope) {
+myApp.controller('loginController', ['$scope', '$location', 'AuthService', function($scope, $location, AuthService) {
 
   $scope.login = function() {
 
     // value to show Error
-    $scope.error = false;
+    $scope.loginError = false;
 
     // call login from service
-    AuthService.login($scope.login.username, $scope.login.password)
+    AuthService.login($scope.loginForm.username, $scope.loginForm.password)
       // handle success
       .then(function() {
         $location.path('/game');
-        $scope.error = false;
-        $scope.login = {};
+        $scope.loginError = false;
+        $scope.loginForm = {};
       })
       // handle Error
       .catch(function() {
-        $scope.error = true;
+        $scope.loginError = true;
         $scope.errorMessage = 'Invalid username or password.';
-        $scope.login = {};
+        $scope.loginForm = {};
       });
   };
 
@@ -33,11 +31,11 @@ myApp.controller('registerController', ['$scope', '$location', 'AuthService', fu
       $scope.disabled = true;
 
       // call register from service
-      AuthService.register($scope.register.username, $scope.register.password)
+      AuthService.register($scope.registerForm.username, $scope.registerForm.password)
       // handle success
       .then(function() {
         $location.path('/game');
-        $scope.register = {};
+        $scope.registerForm = {};
         $scope.disabled = false;
       })
       // handle Error
@@ -45,18 +43,18 @@ myApp.controller('registerController', ['$scope', '$location', 'AuthService', fu
         $scope.registerError = true;
         $scope.errorMessage = 'Something went wrong!';
         $scope.disabled = false;
-        $scope.register = {};
+        $scope.registerForm = {};
       });
 
     };
 
 }]);
 
-myApp.controller('noLoginController', ['$scope', '$location', function($scope, $location) {
+myApp.controller('noLoginController', ['$scope', '$location', 'AuthService', function($scope, $location, AuthService) {
 
   $scope.tempUser = function() {
 
-    AuthService.noUser()
+    AuthService.tempUserLogin()
     // handle success
     .then(function() {
       $location.path('/game');
