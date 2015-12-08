@@ -7,7 +7,10 @@ var mongoose = require('mongoose'),
 var User = new Schema({
   username: String,
   password: String,
-  highscore: Number
+  // highscore: Number,
+  time: String,
+  finished: String,
+  distanceTraveled: String
 });
 
 User.plugin(passportLocalMongoose);
