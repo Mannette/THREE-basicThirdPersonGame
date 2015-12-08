@@ -72,9 +72,9 @@ router.post('/tempUser', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res, next) {
-  window.cancelAnimationFrame(_animationFrameLoop);
 
   User.findById(userId, function(err, user) {
+    console.log(userId);
     if (err) {
       return res.status(500).json({err: err});
     }
@@ -97,12 +97,13 @@ router.get('/logout', function(req, res, next) {
     }
 
   });
-  
+  console.log('logging out');
   req.logout();
   res.status(200).json({status: 'Bye!'});
 });
 
 router.post('/update', function(req, res, next) {
+  console.log(req);
   var userId = req.user._id,
       time = req.body.time,
       finished = req.body.finished,

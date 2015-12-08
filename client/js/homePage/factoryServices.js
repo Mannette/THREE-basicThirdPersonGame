@@ -62,6 +62,7 @@ myApp.factory('AuthService', ['$q', '$http', function($q, $http) {
 
   function logout() {
     var deferred = $q.defer();
+    // console.log('auth service logout');
 
     // send GET request to server
     $http.get('/logout')
