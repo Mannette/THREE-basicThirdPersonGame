@@ -5,7 +5,15 @@
 	<h2>Welcome to my simple game using THREE.js and CANNON.js!</h2>
 	<p>You can control the player vechile by using the follow keys:</p>
 	<p>W &rarr; Forward<br />S &rarr; Backward<br />A &rarr; Left<br />D &rarr; Right<br />SPACE &rarr; Jump</p>
-	<p>SURVIVE!</p>
+	<p>Make it to the end as fast as you can!</p>
+</div>
+
+<div ng-controller="logoutController">
+	<button ng-click="logout()" class="btn btn-warning btn-sm logoutBtn">Logout</button>
+</div>
+
+<div>
+	<h1><time id="timer" class="timer">00:00:00</time></h1>
 </div>
 
 <script src="../js/libs/stats.min.js"></script>
