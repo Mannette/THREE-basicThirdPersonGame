@@ -66,3 +66,17 @@ myApp.controller('noLoginController', ['$scope', '$location', 'AuthService', fun
   };
 
 }]);
+
+myApp.controller('logoutController', ['$scope', '$location', '$http', 'AuthService', function($scope, $location, $http, AuthService) {
+
+// var User = require('../../../server/models/user');
+
+  $scope.logout = function() {
+
+      AuthService.logout()
+        .then(function() {
+          $location.path('/');
+        });
+  };
+  
+}]);
