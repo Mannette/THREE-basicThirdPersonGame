@@ -24,3 +24,16 @@ html, body {
   transition:opacity 2000ms;
   -webkit-transition:opacity 2000ms;
 }
+
+.logoutBtn {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}
+
+.timer {
+  position: fixed;
+  top: 5px;
+  left: 85px;
+  color: cyan;
+}
