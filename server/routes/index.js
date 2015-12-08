@@ -2,8 +2,7 @@ var express = require('express'),
     router = express.Router(),
     passport = require('passport'),
     User = require('../models/user'),
-    path = require('path'),
-    nonUser = require('../models/nonUser');
+    path = require('path');
 
 
 router.get('*', function(req, res) {
@@ -96,8 +95,9 @@ router.get('/logout', function(req, res, next) {
         return res.status(200).json({'status': 'time NOT updated!'});
       }
     }
-  });
 
+  });
+  
   req.logout();
   res.status(200).json({status: 'Bye!'});
 });
@@ -130,7 +130,7 @@ router.post('/update', function(req, res, next) {
       }
     }
 
-});
+  });
 
 
   // query database by user id
