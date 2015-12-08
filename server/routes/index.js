@@ -11,6 +11,7 @@ router.get('*', function(req, res) {
 });
 
 router.post('/login', function(req, res, next) {
+  console.log(req);
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     if (!user) {
@@ -26,11 +27,11 @@ router.post('/login', function(req, res, next) {
 });
 
 router.post('/register', function(req, res, next) {
+  console.log(req);
   User.register(new User({
-    username: req.body.username, highscore: 0
+    username: req.body.username, time: '00:00:00', finished: 'No'
   }), req.body.password, function(err, account) {
     if (err) {
-      console.log(err);
       return res.status(500).json({err: err});
     }
     passport.authenticate('local', function(error, user, info) {
@@ -58,7 +59,7 @@ router.post('/tempUser', function(req, res, next) {
       return res.status(200).json({status: 'Temp registration successful!'});
     } else {
       User.register(new User({
-        username: 'temp', highscore: 0
+        username: 'temp', time: '00:00:00', finished: 'No'
       }), 'temp', function(error, account) {
         if (error) {
           return res.status(500).json({err: err});
@@ -71,8 +72,70 @@ router.post('/tempUser', function(req, res, next) {
   });
 });
 
-// router.get('/game', function(req, res, next) {
-//   res.render('myDemo');
-// });
+router.get('/logout', function(req, res, next) {
+  window.cancelAnimationFrame(_animationFrameLoop);
+  
+  User.findById(userId, function(err, user) {
+    if (err) {
+      return res.status(500).json({err: err});
+    }
+    if (user) {
+      if (user.finished === 'No') {
+        user.time = time;
+        user.finished = finished;
+        user.distanceTraveled = distance;
+        user.save();
+        return res.status(200).json({'status': 'time updated!'});
+      } else if (user.finished === 'Yes' && user.time > time && finished === 'Yes') {
+        user.time = time;
+        user.finished = finished;
+        user.distanceTraveled = distance;
+        user.save();
+        return res.status(200).json({'status': 'time updated!'});
+      } else {
+        return res.status(200).json({'status': 'time NOT updated!'});
+      }
+    }
+
+  req.logout();
+  res.status(200).json({status: 'Bye!'});
+});
+
+router.post('/update', function(req, res, next) {
+  var userId = req.user._id,
+      time = req.body.time,
+      finished = req.body.finished,
+      distance = req.body.distanceTraveled;
+
+  User.findById(userId, function(err, user) {
+    if (err) {
+      return res.status(500).json({err: err});
+    }
+    if (user) {
+      if (user.finished === 'No') {
+        user.time = time;
+        user.finished = finished;
+        user.distanceTraveled = distance;
+        user.save();
+        return res.status(200).json({'status': 'time updated!'});
+      } else if (user.finished === 'Yes' && user.time > time && finished === 'Yes') {
+        user.time = time;
+        user.finished = finished;
+        user.distanceTraveled = distance;
+        user.save();
+        return res.status(200).json({'status': 'time updated!'});
+      } else {
+        return res.status(200).json({'status': 'time NOT updated!'});
+      }
+    }
+
+});
+
+
+  // query database by user id
+  // get highscore from database
+  // update highscore if new score is greater than highscore from database
+
+});
 
 module.exports = router;
