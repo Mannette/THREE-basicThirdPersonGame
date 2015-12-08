@@ -74,7 +74,7 @@ router.post('/tempUser', function(req, res, next) {
 
 router.get('/logout', function(req, res, next) {
   window.cancelAnimationFrame(_animationFrameLoop);
-  
+
   User.findById(userId, function(err, user) {
     if (err) {
       return res.status(500).json({err: err});
@@ -96,6 +96,7 @@ router.get('/logout', function(req, res, next) {
         return res.status(200).json({'status': 'time NOT updated!'});
       }
     }
+  });
 
   req.logout();
   res.status(200).json({status: 'Bye!'});
