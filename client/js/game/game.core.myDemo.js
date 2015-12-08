@@ -22,9 +22,6 @@ window.game.core = function () {
 		player: {
 			// Attributes
 
-			// player's points
-			points: 0,
-
 			// an array to hold the positions where points have been accumulated
 			positionArr: [],
 
@@ -143,10 +140,14 @@ window.game.core = function () {
 				var newShapeLimit = _game.shapeLimit + _game.levelDifficulty * 10;
 
 				_game.player.checkGameOver();
+				totalDistance = 199950 - Math.floor(playerCurPosition);
+
 				// point accumulation based on player's position.
-				_game.player.accumulatePoints(playerCurPosition);
+				// _game.player.accumulatePoints(playerCurPosition);
+
 				// function to remove shapes as player passes them
 				_game.removeShapes();
+				// console.log(playerCurPosition);
 
 				if (_game.levelDifficulty > 1) {
 					_game.crossBeamLimit = _game.levelDifficulty * 5 + _game.crossBeamLimitAdjuster;
@@ -168,6 +169,11 @@ window.game.core = function () {
 						return _game.level.additionalLevels[i]();
 					}
 				}
+				if (playerCurPosition <= -199950) {
+					finishedLevels = 'Yes';
+				}
+				// console.log('the current score is: ' + score);
+				// console.log('current lives are: ' + lives);
 			},
 			updateCamera: function() {
 				// Calculate camera coordinates by using Euler radians from player's last rotation
@@ -211,6 +217,7 @@ window.game.core = function () {
 			accumulatePoints: function(playerPosition) {
 				// check if position is in array
 				if (_game.player.positionArr.indexOf(Math.floor(playerPosition)) === -1) {
+					// console.log(playerPosition);
 					// if not, check to see if points should be accumulated
 					if (Math.floor(playerPosition) % 100 === (50 || -50)) {
 						_game.player.points += 10;
@@ -322,6 +329,17 @@ window.game.core = function () {
 
 				// Create a solid material for all objects in the world
 				_cannon.solidMaterial = _cannon.createPhysicsMaterial(new CANNON.Material("solidMaterial"), 0, 0.1);
+
+				// create a finish wall
+				_cannon.createRigidBody({
+					shape: new CANNON.Box(new CANNON.Vec3(20, _game.level.floorWidth, 300)),
+					mass: 0,
+					position: new CANNON.Vec3(-200020, 0, 300),
+					meshMaterial: new THREE.MeshLambertMaterial({
+						color: window.game.static.colors.green
+					}),
+					physicsMaterial: _cannon.solidMaterial
+				});
 
 				// Add a floor
 				_cannon.createRigidBody({
@@ -3371,35 +3389,44 @@ window.game.core = function () {
 		  var mass = 5,
 					zPosition = 200;
 
-		  var randCylRad = (Math.random() * 200) + 10;
+		  // var randCylRad = (Math.random() * 200) + 10;
+			//
+		  // var randomSelected = Math.floor(Math.random() * 2);
+			//
+		  // switch (randomSelected) {
+		  //   case 0:
+			// 			_cannon.createRigidBody({
+			//         shape: new CANNON.Box(new CANNON.Vec3(randSize, randSize, randSize)),
+			//         mass: mass,
+			//         position: new CANNON.Vec3(randX, randY, zPosition),
+			//         meshMaterial: new THREE.MeshLambertMaterial({
+			//           color: window.game.static.colors.cyan
+			//         }),
+			//         physicsMaterial: _cannon.solidMaterial
+		  //     	});
+		  //     break;
+		    // case 1:
+				// 		_cannon.createRigidBody({
+			  //       shape: new CANNON.Sphere(randRadius),
+			  //       mass: mass,
+			  //       position: new CANNON.Vec3(randX, randY, zPosition),
+			  //       meshMaterial: new THREE.MeshLambertMaterial({
+			  //         color: window.game.static.colors.cyan
+			  //       }),
+			  //       physicsMaterial: _cannon.solidMaterial
+			  //     });
+		    //   break;
 
-		  var randomSelected = Math.floor(Math.random() * 2);
-
-		  switch (randomSelected) {
-		    case 0:
-						_cannon.createRigidBody({
-			        shape: new CANNON.Box(new CANNON.Vec3(randSize, randSize, randSize)),
-			        mass: mass,
-			        position: new CANNON.Vec3(randX, randY, zPosition),
-			        meshMaterial: new THREE.MeshLambertMaterial({
-			          color: window.game.static.colors.cyan
-			        }),
-			        physicsMaterial: _cannon.solidMaterial
-		      	});
-		      break;
-		    case 1:
-						_cannon.createRigidBody({
-			        shape: new CANNON.Sphere(randRadius),
-			        mass: mass,
-			        position: new CANNON.Vec3(randX, randY, zPosition),
-			        meshMaterial: new THREE.MeshLambertMaterial({
-			          color: window.game.static.colors.cyan
-			        }),
-			        physicsMaterial: _cannon.solidMaterial
-			      });
-		      break;
-
-		  }
+		  // }
+			_cannon.createRigidBody({
+				shape: new CANNON.Box(new CANNON.Vec3(randSize, randSize, randSize)),
+				mass: mass,
+				position: new CANNON.Vec3(randX, randY, zPosition),
+				meshMaterial: new THREE.MeshLambertMaterial({
+					color: window.game.static.colors.cyan
+				}),
+				physicsMaterial: _cannon.solidMaterial
+			});
 
 		},
 		randomShapes: function() {
@@ -3407,7 +3434,7 @@ window.game.core = function () {
 		},
 		removeShapes: function() {
 			if (_cannon.bodies.length > 4) {
-				for (var i = 4; i < _cannon.bodies.length; i++) {
+				for (var i = 5; i < _cannon.bodies.length; i++) {
 					if (_cannon.bodies[i].position.x >= (_game.player.mesh.position.x + 500)) {
 						console.log('removing shapes: ' + _cannon.bodies[i]);
 						_cannon.removeVisual(_cannon.bodies[i]);
@@ -3464,9 +3491,23 @@ window.game.core = function () {
 			_game.player = window.game.helpers.cloneObject(_gameDefaults.player);
 			_game.level = window.game.helpers.cloneObject(_gameDefaults.level);
 
+			_game.levelDifficulty = 1;
+			_game.crossBeamRangeMin = 165000;
+			_game.crossBeamRangeMax = 50000;
+
+			_game.positionToBeginShapes = 99000;
+			_game.positionToStopShapes = 50000;
+
 			// Create player and level again
 			_game.player.create();
 			_game.level.create();
+
+			updateDatabase();
+
+			// score -= 5;
+			// lives -= 1;
+			// _ui.elements.time.textContent = '00:00:00';
+			// clearTimeout(_ui.elements.t);
 
 			// Continue with the game loop
 			_game.loop();
@@ -3511,13 +3552,40 @@ window.game.core = function () {
 				if (!_ui.hasClass("infoboxIntro", "fade-out")) {
 					_ui.fadeOut("infoboxIntro");
 				}
+				if (!timerStart) {
+					_ui.timer();
+					timerStart = true;
+				}
+			};
+
+			updateDatabase = function() {
+				$.ajax({
+	  			type: "POST",
+	  			url: '/update',
+	  			data: {time: _ui.elements.time.textContent,
+								finished: finishedLevels,
+								distanceTraveled: totalDistance + ' feet traveled'}
+				})
+				.done(function() {
+					alert('You traveled ' + totalDistance + ' feet in ' + _ui.elements.time.textContent);
+				})
+				.fail(function() {
+					alert( "error" );
+				});
 			};
 		}
 	};
 
 	// counter variable to keep track of which level function should be called.
 	var counter = 0;
+	// score variable to keep track of score independent game
+	// var score = 10000;
+	// lives variable to keep track of lives independent of Game
+	// var lives = 3;
 
+	var timerStart = false;
+	var finishedLevels = 'No';
+	var totalDistance = null;
 
 	// Internal variables
 	var _events;
