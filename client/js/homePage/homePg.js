@@ -4,7 +4,6 @@ myApp.controller('loginController', ['$scope', '$location', 'AuthService', funct
 
     // value to show Error
     $scope.loginError = false;
-
     // call login from service
     AuthService.login($scope.loginForm.username, $scope.loginForm.password)
       // handle success
@@ -70,6 +69,8 @@ myApp.controller('noLoginController', ['$scope', '$location', 'AuthService', fun
 myApp.controller('logoutController', ['$scope', '$location', '$http', 'AuthService', function($scope, $location, $http, AuthService) {
 
   $scope.logout = function() {
+    $('body').addClass('body');
+
     // console.log('logout controller');
 
     AuthService.logout()
