@@ -141,7 +141,7 @@ window.game.core = function () {
 				var newShapeLimit = _game.shapeLimit + _game.levelDifficulty * 10;
 
 				_game.player.checkGameOver();
-				totalDistance = 199950 - Math.floor(playerCurPosition);
+				totalDistance = 199950 - Math.floor(_game.player.mesh.position.x);
 
 				// point accumulation based on player's position.
 				// _game.player.accumulatePoints(playerCurPosition);
@@ -3590,7 +3590,7 @@ window.game.core = function () {
 
 	var timerStart = false;
 	var finishedLevels = 'No';
-	var totalDistance = null;
+	var totalDistance = 0;
 
 	// Internal variables
 	var _events;
