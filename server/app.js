@@ -1,5 +1,6 @@
 // *** main dependencies *** //
 require('../server/models/user');
+
 var express = require('express'),
     favicon = require('serve-favicon'),
     logger = require('morgan'),
@@ -15,7 +16,7 @@ var express = require('express'),
     io = require('socket.io')(server);
 
 // mongoose
-mongoose.connect(process.env.MONGOLAB_URI);
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/endlessRunner');
 
 // user schema/model
 var User = require('./models/user.js');
