@@ -1,3 +1,6 @@
+<h1 class="title">Endless 3D Runner!</h1>
+<hr>
+
 <div class="login" ng-controller="loginController">
   <h2 class="title">Do you wish to login?!</h2>
   <section ng-show="loginError" class="alert alert-danger">
@@ -7,12 +10,12 @@
     Oh noeees! Something went horribly wrong!
   </section>
   <form class="form-group" ng-submit="login()">
-    <span class="login-form"><label><b>Username</b></label></span>
+    <span class="login-form"><label>Username</label></span>
     <br>
     <input type="text" class="login-info" placeholder="Enter your username!" ng-model="loginForm.username">
     <br>
     <br>
-    <span class="login-form"><label><b>Password</b></label></span>
+    <span class="login-form"><label>Password</label></span>
     <br>
     <input type="password" class="login-info" placeholder="Enter your password!" ng-model="loginForm.password">
     <br>
