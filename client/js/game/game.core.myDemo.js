@@ -3568,7 +3568,11 @@ window.game.core = function () {
 								distanceTraveled: totalDistance + ' feet traveled'}
 				})
 				.done(function() {
-					alertify.log('You traveled ' + totalDistance + ' feet in ' + _ui.elements.time.textContent, 'success', 5000);
+					if (finishedLevels === 'Yes') {
+						alertify.log('You beat the game in ' + _ui.elements.time.textContent + '! Good Job!', 'success', 5000)
+					} else {
+						alertify.log('You traveled ' + totalDistance + ' feet in ' + _ui.elements.time.textContent, 'success', 5000);
+					}
 				})
 				.fail(function() {
 					alertify.log('Sorry, we couldn\'t update your stats :\(', 'error', 5000);
