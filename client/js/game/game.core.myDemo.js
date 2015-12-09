@@ -309,7 +309,7 @@ window.game.core = function () {
 			},
 			checkGameOver: function () {
 				// Example game over mechanism which resets the game if the player is falling beneath -800
-				if (_game.player.mesh.position.z <= -800 /*|| _cannon.getCollisions(_game.player.rigidBody.index) > 1*/) {
+				if (_game.player.mesh.position.z <= -800 || _cannon.getCollisions(_game.player.rigidBody.index) > 1) {
 					_game.destroy();
 				}
 			}
