@@ -15,7 +15,7 @@ var express = require('express'),
     io = require('socket.io')(server);
 
 // mongoose
-mongoose.connect('mongodb://localhost/endlessRunner');
+mongoose.connect(process.env.MONGOLAB_URI);
 
 // user schema/model
 var User = require('./models/user.js');
@@ -81,9 +81,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(process.env.PORT || 5000, function() {
-  console.log('listening on some port');
-});
-
-
 module.exports = app;
+
+// mongoose.connect('mongodb://localhost/endlessRunner');
