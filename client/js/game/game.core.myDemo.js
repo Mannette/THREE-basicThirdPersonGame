@@ -1,3 +1,4 @@
+$('body').removeClass('body');
 window.game = window.game || {};
 
 window.game.core = function () {
@@ -3567,10 +3568,10 @@ window.game.core = function () {
 								distanceTraveled: totalDistance + ' feet traveled'}
 				})
 				.done(function() {
-					alert('You traveled ' + totalDistance + ' feet in ' + _ui.elements.time.textContent);
+					alertify.log('You traveled ' + totalDistance + ' feet in ' + _ui.elements.time.textContent, 'success', 5000);
 				})
 				.fail(function() {
-					alert( "error" );
+					alertify.log('Sorry, we couldn\'t update your stats :\(', 'error', 5000);
 				});
 			};
 		}
