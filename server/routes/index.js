@@ -10,7 +10,6 @@ router.get('*', function(req, res) {
 });
 
 router.post('/login', function(req, res, next) {
-  console.log(req);
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     if (!user) {
@@ -26,7 +25,6 @@ router.post('/login', function(req, res, next) {
 });
 
 router.post('/register', function(req, res, next) {
-  console.log(req);
   User.register(new User({
     username: req.body.username, time: '00:00:00', finished: 'No'
   }), req.body.password, function(err, account) {
@@ -97,13 +95,11 @@ router.get('/logout', function(req, res, next) {
     }
 
   });
-  console.log('logging out');
   req.logout();
   res.status(200).json({status: 'Bye!'});
 });
 
 router.post('/update', function(req, res, next) {
-  console.log(req);
   var userId = req.user._id,
       time = req.body.time,
       finished = req.body.finished,

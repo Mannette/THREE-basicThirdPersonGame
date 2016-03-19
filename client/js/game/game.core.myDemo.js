@@ -140,8 +140,8 @@ window.game.core = function () {
 				// change the shape limit based on levelDifficulty. Limit increases by 10 each level.
 				var newShapeLimit = _game.shapeLimit + _game.levelDifficulty * 10;
 
+				// totalDistance = 199950 - Math.floor(_game.player.mesh.position.x);
 				_game.player.checkGameOver();
-				totalDistance = 199950 - Math.floor(_game.player.mesh.position.x);
 
 				// point accumulation based on player's position.
 				// _game.player.accumulatePoints(playerCurPosition);
@@ -3488,6 +3488,10 @@ window.game.core = function () {
 			_three.destroy();
 			_three.setup();
 
+			time = _ui.elements.time.textContent;
+			totalDistance = 199950 - Math.floor(_game.player.mesh.position.x);
+			console.log('the position at the time of destruction is.. ' + _game.player.mesh.position.x);
+
 			// Recreate player and level objects by using initial values which were copied at the first start
 			_game.player = window.game.helpers.cloneObject(_gameDefaults.player);
 			_game.level = window.game.helpers.cloneObject(_gameDefaults.level);
@@ -3563,7 +3567,7 @@ window.game.core = function () {
 				$.ajax({
 	  			type: "POST",
 	  			url: '/update',
-	  			data: {time: _ui.elements.time.textContent,
+	  			data: {time: _ui.elements.time.textContent - time,
 								finished: finishedLevels,
 								distanceTraveled: totalDistance + ' feet traveled'}
 				})
@@ -3591,6 +3595,7 @@ window.game.core = function () {
 	var timerStart = false;
 	var finishedLevels = 'No';
 	var totalDistance = 0;
+	var time = 0;
 
 	// Internal variables
 	var _events;
