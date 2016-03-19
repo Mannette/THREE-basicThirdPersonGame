@@ -324,9 +324,9 @@ window.game.core = function () {
 
 			// Methods
 			create: function() {
-				console.log(_game.shapeLimit);
-				console.log(_cannon.bodies);
-				console.log('the level difficulty is: ' + _game.levelDifficulty);
+				// console.log(_game.shapeLimit);
+				// console.log(_cannon.bodies);
+				// console.log('the level difficulty is: ' + _game.levelDifficulty);
 
 				// Create a solid material for all objects in the world
 				_cannon.solidMaterial = _cannon.createPhysicsMaterial(new CANNON.Material("solidMaterial"), 0, 0.1);
@@ -1900,7 +1900,7 @@ window.game.core = function () {
 
 			additionalLevels: [
 				function() {
-					console.log('the level difficulty is: ' + _game.levelDifficulty);
+					// console.log('the level difficulty is: ' + _game.levelDifficulty);
 					// random cross beams
 					for (var i = 0; i < _game.crossBeamLimit; i++) {
 						_game.randomCrossBeams();
@@ -3375,7 +3375,7 @@ window.game.core = function () {
 			]
 		},
 		determineRandomShapes: function() {
-			console.log('create shapes');
+			// console.log('create shapes');
 			var shapeMinXPosition = _game.player.mesh.position.x - 5000,
 					shapeMaxXPosition = _game.player.mesh.position.x - 8000,
 					shapeMinSize = 10,
@@ -3437,7 +3437,7 @@ window.game.core = function () {
 			if (_cannon.bodies.length > 4) {
 				for (var i = 5; i < _cannon.bodies.length; i++) {
 					if (_cannon.bodies[i].position.x >= (_game.player.mesh.position.x + 500)) {
-						console.log('removing shapes: ' + _cannon.bodies[i]);
+						// console.log('removing shapes: ' + _cannon.bodies[i]);
 						_cannon.removeVisual(_cannon.bodies[i]);
 						// _three.scene.remove()
 					}
@@ -3488,9 +3488,9 @@ window.game.core = function () {
 			_three.destroy();
 			_three.setup();
 
-			time = _ui.elements.time.textContent;
+			newTime = _ui.elements.time.textContent.replace(/:/g, '') - time;
 			totalDistance = 199950 - Math.floor(_game.player.mesh.position.x);
-			console.log('the position at the time of destruction is.. ' + _game.player.mesh.position.x);
+
 
 			// Recreate player and level objects by using initial values which were copied at the first start
 			_game.player = window.game.helpers.cloneObject(_gameDefaults.player);
@@ -3508,6 +3508,9 @@ window.game.core = function () {
 			_game.level.create();
 
 			updateDatabase();
+
+			time = _ui.elements.time.textContent.replace(/:/g, '');
+			rebuildTime(newTime);
 
 			// score -= 5;
 			// lives -= 1;
@@ -3567,20 +3570,30 @@ window.game.core = function () {
 				$.ajax({
 	  			type: "POST",
 	  			url: '/update',
-	  			data: {time: _ui.elements.time.textContent - time,
+	  			data: {time: _ui.elements.time.textContent,
 								finished: finishedLevels,
 								distanceTraveled: totalDistance + ' feet traveled'}
 				})
 				.done(function() {
 					if (finishedLevels === 'Yes') {
-						alertify.log('You beat the game in ' + _ui.elements.time.textContent + '! Good Job!', 'success', 5000)
+						alertify.log('You beat the game in ' + _ui.elements.time.textContent + '! Good Job!', 'success', 5000);
 					} else {
-						alertify.log('You traveled ' + totalDistance + ' feet in ' + _ui.elements.time.textContent, 'success', 5000);
+						alertify.log('You traveled ' + totalDistance + ' feet in ' + newTime, 'success', 5000);
 					}
 				})
 				.fail(function() {
 					alertify.log('Sorry, we couldn\'t update your stats :\(', 'error', 5000);
 				});
+			};
+
+			rebuildTime = function(number) {
+				var string = number.toString();
+				string = '00000' + string;
+				if (string.length > 6) {
+					string = string.slice(-6);
+				}
+				newTime = string.slice(0, 2) + ':' + string.slice(2, 4) + ':' + string.slice(4);
+				return newTime;
 			};
 		}
 	};
@@ -3596,6 +3609,7 @@ window.game.core = function () {
 	var finishedLevels = 'No';
 	var totalDistance = 0;
 	var time = 0;
+	var newTime = 0;
 
 	// Internal variables
 	var _events;
