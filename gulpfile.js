@@ -2,11 +2,14 @@
  * Module Dependencies
  */
 
-var gulp = require('gulp');
-var jshint = require('gulp-jshint');
-var browserSync = require('browser-sync');
-var reload = browserSync.reload;
-var nodemon = require('gulp-nodemon');
+var gulp        = require('gulp'),
+    jshint      = require('gulp-jshint'),
+    browserSync = require('browser-sync'),
+    reload      = browserSync.reload,
+    nodemon     = require('gulp-nodemon'),
+    babel       = require('gulp-babel'),
+    eslint      = require('gulp-eslint'),
+    sass        = require('gulp-sass');
 
 /**
  * Config
@@ -14,13 +17,19 @@ var nodemon = require('gulp-nodemon');
 
 var paths = {
   styles: [
-    './client/css/*.css',
+    './client/css/*.css'
   ],
   scripts: [
-    './client/js/*.js',
+    './client/js/*.js'
   ],
   server: [
     './server/bin/www'
+  ],
+  es6: [
+    './client/js/es6/*.js'
+  ],
+  sass: [
+    './client/scss/*.scss'
   ]
 };
 
@@ -49,7 +58,7 @@ gulp.task('browser-sync', ['nodemon'], function(done) {
   }, done);
 });
 
-gulp.task('nodemon', function (cb) {
+gulp.task('nodemon', function(cb) {
   var called = false;
   return nodemon(nodemonConfig)
   .on('start', function () {
@@ -58,15 +67,34 @@ gulp.task('nodemon', function (cb) {
       cb();
     }
   })
-  .on('restart', function () {
-    setTimeout(function () {
+  .on('restart', function() {
+    setTimeout(function() {
       reload({ stream: false });
     }, 1000);
   });
 });
 
+gulp.task('transpile', function() {
+  return gulp.src('./client/js/es6/background.js')
+    .pipe(babel({
+      presets: ['es2015']
+    }))
+      // .on('error', function(error) {
+      // console.error('*****ERROR*****', '\n', error.name, '\n', error.message);
+      // })
+    .pipe(gulp.dest('./client/js/homepage'));
+});
+
+gulp.task('sass', function() {
+  return gulp.src(paths.sass)
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./client/css'));
+})
+
 gulp.task('watch', function() {
   gulp.watch(paths.scripts, ['lint']);
+  gulp.watch(paths.sass,    ['sass']);
+  gulp.watch(paths.es6,     ['transpile']);
 });
 
 gulp.task('default', ['browser-sync', 'watch'], function(){});
