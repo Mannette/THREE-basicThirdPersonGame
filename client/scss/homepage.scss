@@ -1,0 +1,73 @@
+h1, h2, h3, h4, h5, h6 {
+  font-family: Impact, Charcoal, sans-serif;
+}
+
+.login {
+  text-align: center;
+  margin-top: 5px;
+  font-size: 25px;
+}
+
+.login .title {
+  font-size: 50px;
+  color: white;
+  /*background-color: blue;*/
+  height: 100px;
+  padding-top: 25px;
+  border-radius: 20px;
+}
+
+.login .btn {
+  margin-top: 10px;
+}
+
+.btn {
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+.form-group {
+  margin-top: 60px;
+}
+
+.non-user-play {
+  position: relative;
+  font-size: 10px;
+  top: -300px;
+  display: block;
+  margin: 0 auto;
+}
+
+.init-signup {
+  display: block;
+  text-align: center;
+  color: white;
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+label {
+  color: white;
+  font-weight: 500;
+}
+
+input {
+  font-size: 14px;
+  padding: 3px 10px;
+}
+
+.title {
+  color: cyan;
+  font-size: 70px;
+}
+
+/**
+ * FORMAT ABOVE FOR SASS
+ */
+
+.homepage-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
