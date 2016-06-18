@@ -3582,7 +3582,7 @@ window.game.core = function () {
 					}
 				})
 				.fail(function() {
-					alertify.log('Sorry, we couldn\'t update your stats :\(', 'error', 5000);
+					alertify.log('Login to save your stats!', 'error', 5000);
 				});
 			};
 
