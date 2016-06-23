@@ -71,8 +71,6 @@ myApp.controller('logoutController', ['$scope', '$location', '$http', 'AuthServi
   $scope.logout = function() {
     $('body').addClass('body');
 
-    // console.log('logout controller');
-
     AuthService.logout()
       .then(function() {
         $location.path('/');
