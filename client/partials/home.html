@@ -1,9 +1,11 @@
-<div id="background" class="homepage-background"></div>
+<img id="background" class="homepage-background" src="images/Background.png" />
 <h1 class="title">Endless 3D Runner!</h1>
-<hr>
 
 <div class="login" ng-controller="loginController">
-  <h2 class="title">Do you wish to login?!</h2>
+  <div ng-controller="noLoginController">
+    <button class="btn btn-danger btn-lg non-user-play" ng-click="tempUser()">Let me play!</button>
+    <span class="no-login-info"><i>(Stats will not be saved unless you login)</i></span>
+  </div>
   <section ng-show="loginError" class="alert alert-danger">
     Invalid username or password.
   </section>
@@ -22,16 +24,12 @@
     <br>
     <button action="submit" class="btn btn-info btn-md">Login!</button>
   </form>
-</div>
 
-<div ng-controller="noLoginController">
-  <button class="btn btn-danger btn-lg non-user-play" ng-click="tempUser()">No! Let me play!</button>
+  <span id="sign-up" class="init-signup">
+    Don't have a username?
+    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Sign Up!</button>
+  </span>
 </div>
-
-<span id="sign-up" class="init-signup">
-  Don't have a username?
-  <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Sign Up!</button>
-</span>
 
 <div id="myModal" class="modal fade" role="dialog" action="/register" method="post" ng-controller="registerController">
 <div class="modal-dialog">
@@ -65,5 +63,3 @@
 
 </div>
 </div>
-
-<script src="js/homepage/background.js"></script>
