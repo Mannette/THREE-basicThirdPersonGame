@@ -4,7 +4,7 @@ if (!Detector.webgl) {
   window.gameInstance = window.game.core();
   window.gameInstance.init({
     domContainer: document.querySelector("#game"),
-    rendererClearColor: window.game.static.white
+    rendererClearColor: window.game.static.colors.white
   });
 }
 
