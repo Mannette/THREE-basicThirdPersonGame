@@ -7,7 +7,6 @@ var mongoose = require('mongoose'),
 var User = new Schema({
   username: String,
   password: String,
-  // highscore: Number,
   time: String,
   finished: String,
   distanceTraveled: String
