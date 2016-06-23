@@ -45,7 +45,7 @@ window.game.three = function() {
 			_three.camera.up.set(0, 0, 1);
 
 			// Define default WebGL renderer
-			_three.renderer = new THREE.WebGLRenderer({ antialias: true });
+			_three.renderer = new THREE.WebGLRenderer({ antialias: true, aplpha: true });
 
 			// Set the background color (HTML background will be used if this option is omitted)
 			if (options && typeof options.rendererClearColor === "number") {
